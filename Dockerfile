@@ -1,9 +1,11 @@
-FROM python:3
-MAINTAINER Minhaj
-RUN apt-get update
-#RUN apt-get install -y python
-RUN groupadd -r user && useradd -r -g user user
-USER user
-ADD hello.py /home/hello.py
-CMD ["/home/hello.py"]
-ENTRYPOINT ["python"]
+FROM python:2.7-alpine
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD flask run --host=0.0.0.0 --port=5000
