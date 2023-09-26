@@ -1,38 +1,20 @@
-name: Docker
+name: Python application
 
 on:
   push:
-    branches:
-      - main
-
-  env:
-    # TODO: Change variable to your image's name.
-    IMAGE_NAME: image
-
+   branches: [ main ]
+  pull_request:
+    branches: [ main ]
+      
 jobs:
-  push:
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag image
-
-      - name: Log into registry
-        run: echo "${{ secrets.Kiran@7735 }}" | docker login ${{ secrets.https://hub.docker.com/u/minhajkadri }} -u ${{ secrets.minhajkadri }} --password-stdin
-
-      - name: Push image
-        run: |
-          IMAGE_ID=${{ secrets.https://hub.docker.com/u/minhajkadri }}/${{ secrets.gt-action }}/$IMAGE_NAME
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag image $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+    - uses: actions/checkout@v1
+    - name: Build & Push Image
+      run: |
+        echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
+        docker image build -t minhajkadri/pyflask:latest .
+        docker push minhajkadri/pyflask:latest
