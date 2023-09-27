@@ -3,8 +3,6 @@ name: Python application
 on:
   push:
    branches: [ main ]
-  pull_request:
-    branches: [ main ]
       
 jobs:
   build:
@@ -18,3 +16,13 @@ jobs:
         echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
         docker image build -t minhajkadri/pyflask:latest .
         docker push minhajkadri/pyflask:latest
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Create kubeconfig
+      run: |
+        mkdir ${HOME}/.kube
+        echo ${{ secrets.BOUNCYKUBECONFIG }} | base64 --decode > ${HOME}/.kube/config
+        cat ${HOME}/.kube/config
+    - name: Use context
+      run: kubectl apply -f deploymentservice.yml -n mikadri
+    - name: Deploy to K8s
