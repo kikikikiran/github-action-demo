@@ -1,27 +1,61 @@
-name: Python application
+name: Deploy to Kubernetes
+
+ 
 
 on:
+
   push:
-   branches: [ main ]
-      
+
+    branches:
+
+      - main
+
+ 
+
 jobs:
-  build:
+
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
+ 
+
     steps:
-    - uses: actions/checkout@v1
-    - name: Build & Push Image
-      run: |
-        echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
-        docker image build -t minhajkadri/pyflask:latest .
-        docker push minhajkadri/pyflask:latest
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Create kubeconfig
-      run: |
-        mkdir ${HOME}/.kube
-        echo ${{ secrets.BOUNCYKUBECONFIG }} | base64 --decode > ${HOME}/.kube/config
-        cat ${HOME}/.kube/config
-    - name: Deploy to K8s
-      run: kubectl apply -f deploymentservice.yml -n mikadri
+
+      - name: Checkout code
+
+        uses: actions/checkout@v2
+
+ 
+
+      - name: Build & Push Docker Image
+
+        run: |
+
+          echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
+
+          docker image build -t minhajkadri/pyflask:latest .
+
+          docker push minhajkadri/pyflask:latest
+
+ 
+
+      - name: Create kubeconfig
+
+        run: |
+
+          mkdir -p ${HOME}/.kube
+
+          echo "${{ secrets.BOUNCYKUBECONFIG }}" | base64 -d > ${HOME}/.kube/config
+
+          chmod 600 ${HOME}/.kube/config
+
+          kubectl config use-context mikadri  # Replace with your desired Kubernetes context
+
+ 
+
+      - name: Deploy to Kubernetes
+
+        run: |
+
+          kubectl apply -f deploymentservice.yml -n mikadri
