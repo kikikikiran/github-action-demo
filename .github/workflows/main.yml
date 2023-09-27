@@ -46,7 +46,7 @@ jobs:
 
           mkdir -p ${HOME}/.kube
 
-          echo "${{ secrets.BOUNCYKUBECONFIG }}" | base64 -d > ${HOME}/.kube/config
+          echo "${{ secrets.BOUNCYKUBECONFIG }}" > ${HOME}/.kube/config
 
           chmod 600 ${HOME}/.kube/config
 
