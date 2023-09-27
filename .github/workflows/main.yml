@@ -50,7 +50,7 @@ jobs:
 
           chmod 600 ${HOME}/.kube/config
 
-          kubectl config use-context mikadri  # Replace with your desired Kubernetes context
+          kubectl config use-context c51p031-admin  # Replace with your desired Kubernetes context
 
  
 
