@@ -57,9 +57,9 @@ jobs:
 
           echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
 
-          docker image build -t minhajkadri/pyflask:${TAG} .
+          docker image build -t minhajkadri/pyflask:$(date +'%Y%m%d%H%M%S')} .
 
-          docker push minhajkadri/pyflask:${TAG}
+          docker push minhajkadri/pyflask:$(date +'%Y%m%d%H%M%S')
 
  
 
