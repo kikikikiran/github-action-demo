@@ -47,7 +47,7 @@ jobs:
       - name: Set date and time as a tag
         run: |
           TAG=$(date +'%Y%m%d%H%M%S')
-          echo "Image tag: $TAG" >> $GITHUB_ENV
+          # echo "Image tag: $TAG" >> $GITHUB_ENV
  
  
 
