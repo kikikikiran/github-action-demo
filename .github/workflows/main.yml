@@ -24,7 +24,6 @@ jobs:
           docker push minhajkadri/pyflask:$(date +'%Y%m%d%H%M%S')
 
 permissions:
-  actions: ubuntu-latest
   checks: build_test
   issues:
     - uses: actions/checkout@v2
