@@ -1,0 +1,18 @@
+name: deploy to k8s
+on:
+  workflow_run:
+    workflows: ["build and push docker image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
+     - run: mkdir -p ${HOME}/.kube
+     - run: echo "${{ secrets.BOUNCYKUBECONFIG }}" > ${HOME}/.kube/config
+     - run: chmod 600 ${HOME}/.kube/config
+     - run: kubectl config use-context c51p031-admin  # Replace with your desired Kubernetes context
+     - run: kubectl get ns
+     
