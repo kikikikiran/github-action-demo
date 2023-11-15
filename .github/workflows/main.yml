@@ -16,7 +16,7 @@ jobs:
         run: >
           
           echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
-          docker image build -t minhajkadri/pyflask:latest .
+          docker build -t minhajkadri/pyflask:latest .
           docker push minhajkadri/pyflask:latest
   deploy:
      needs: build_test
