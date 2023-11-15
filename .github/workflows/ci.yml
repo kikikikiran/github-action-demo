@@ -1,0 +1,30 @@
+---
+name: Deploy to Kubernetes
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build & Push Docker Image
+        run: |
+          
+          echo "${{ secrets.DOCKERPW }}" | docker login -u "minhajkadri" --password-stdin
+          docker build -t minhajkadri/pyflask:latest .
+          docker push minhajkadri/pyflask:latest
+  # deploy:
+  #    needs: build_test
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #    - uses: actions/checkout@v2
+  #    - run: mkdir -p ${HOME}/.kube
+  #    - run: echo "${{ secrets.BOUNCYKUBECONFIG }}" > ${HOME}/.kube/config
+  #    - run: chmod 600 ${HOME}/.kube/config
+  #    - run: kubectl config use-context c51p031-admin  # Replace with your desired Kubernetes context
+  #    - run: kubectl get ns
