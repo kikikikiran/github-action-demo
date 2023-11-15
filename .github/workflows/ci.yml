@@ -1,9 +1,9 @@
 ---
-name: Deploy to Kubernetes
+name: build and push docker image
 on:
   push:
     branches:
-      - main
+      - githubaction
 jobs:
   build_test:
     runs-on: ubuntu-latest
