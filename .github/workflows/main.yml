@@ -26,26 +26,10 @@ jobs:
 permissions:
   actions: ubuntu-latest
   checks: build_test
-   issues:
-     - name: Checkout code
-       uses: actions/checkout@v2
-     - name: Checkout repository
-       uses: actions/checkout@v2
-     - name: Create kubeconfig
-       run: >
-        
-        mkdir -p ${HOME}/.kube
-
-
-        echo "${{ secrets.BOUNCYKUBECONFIG }}" > ${HOME}/.kube/config
-
-
-        chmod 600 ${HOME}/.kube/config
-
-
-        kubectl config use-context c51p031-admin  # Replace with your desired Kubernetes context
-     - name: Deploy to Kubernetes
-       run: |
-        
-        #kubectl apply -f deploymentservice.yml -n mikadri
-         kubectl get ns
+  issues:
+    - uses: actions/checkout@v2
+    - run: mkdir -p ${HOME}/.kube
+    - run: echo "${{ secrets.BOUNCYKUBECONFIG }}" > ${HOME}/.kube/config
+    - run: chmod 600 ${HOME}/.kube/config
+    - run: kubectl config use-context c51p031-admin  # Replace with your desired Kubernetes context
+    - run: kubectl get ns
