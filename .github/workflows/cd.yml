@@ -4,9 +4,8 @@ on:
   workflow_run:
     workflows: ["build and push docker image"]
     types: [requested]
-    branches:
-      - 'githubaction'
-
+    branches-ignore:
+      - "githubaction"
 jobs:
   deploy:
     runs-on: ubuntu-latest
