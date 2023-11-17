@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["build and push docker image"]
-    types:
-      - completed
+    types: [requested]
+    branches:
+      - 'githubaction'
 
 jobs:
   deploy:
